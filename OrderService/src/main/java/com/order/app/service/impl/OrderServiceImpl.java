@@ -57,7 +57,7 @@ public class OrderServiceImpl implements IOrderService {
 		order.setItem(request.getItem());
 		order.setQuantity(request.getQuantity());
 		order.setStatus(OrderStatus.CREATED);
-		try {
+//		try {
 			order = orderRepository.save(order);
 
 			// sending on topic to make payment by payment service
@@ -69,24 +69,24 @@ public class OrderServiceImpl implements IOrderService {
 			logger.info(AppConstants.MAKE_PAYMENT);
 			response.put(AppConstants.MESSAGE, AppConstants.ORDER_CREATED);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
-		} catch (FeignClientException e) {
-			
-			logger.error(e.contentUTF8());
-			order.setStatus(OrderStatus.FAILED);
-			order = orderRepository.save(order);
-			
-			response.put(AppConstants.MESSAGE, AppConstants.ORDER_FAILED);
-			
-			ErrorMessage error = new ErrorMessage("Error while Processing");
-			try {
-				error = new ObjectMapper().readValue(e.contentUTF8(), ErrorMessage.class);
-			} catch (JsonMappingException e1) {
-				e1.printStackTrace();
-			} catch (JsonProcessingException e1) {
-				e1.printStackTrace();
-			}    
-			throw new ErrorWhileProcessing(error.getMessage());
-		}
+//		} catch (FeignClientException e) {
+//			
+//			logger.error(e.contentUTF8());
+//			order.setStatus(OrderStatus.FAILED);
+//			order = orderRepository.save(order);
+//			
+//			response.put(AppConstants.MESSAGE, AppConstants.ORDER_FAILED);
+//			
+//			ErrorMessage error = new ErrorMessage("Error while Processing");
+//			try {
+//				error = new ObjectMapper().readValue(e.contentUTF8(), ErrorMessage.class);
+//			} catch (JsonMappingException e1) {
+//				e1.printStackTrace();
+//			} catch (JsonProcessingException e1) {
+//				e1.printStackTrace();
+//			}    
+//			throw new ErrorWhileProcessing(error.getMessage());
+//		}
 	}
 
 }
